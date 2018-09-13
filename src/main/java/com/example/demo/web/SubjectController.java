@@ -21,7 +21,7 @@ import com.example.demo.model.SubjectTable;
 import com.example.demo.service.GenericService;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/mvc")
 public class SubjectController {
 
 	@Autowired
@@ -31,10 +31,36 @@ public class SubjectController {
 	private GenericService<SubjectTable> subjectTableService;
 
 	@RequestMapping("/home")
-	public String index() {
-		return "index";
+	public ModelAndView index() {
+		List<Subject> subjects = subjectService.sortHeader();
+		ModelAndView mav = new ModelAndView();
+		for (Subject subject : subjects) {
+			subject.changeDateFormat();
+		}
+		mav.addObject("subjects", subjects);
+		mav.setViewName("index");
+		return mav;
+	}
+	
+	@RequestMapping("/home-sortByDate-subjects")
+	public ModelAndView indexSortByDate_Subjects() {
+		List<Subject> subjects = subjectService.sortDate();
+		ModelAndView mav = new ModelAndView();
+		for (Subject subject : subjects) {
+			System.out.println(subject.getDateTimeDifference());
+			subject.changeDateFormat();
+		}
+		mav.addObject("subjects", subjects);
+		mav.setViewName("index");
+		return mav;
 	}
 
+	
+	
+	
+	
+	
+	
 	@GetMapping("/subject-form-create")
 	public ModelAndView showCreateForm(@RequestParam("tableId") int tableId) {
 		ModelAndView mav = new ModelAndView();
