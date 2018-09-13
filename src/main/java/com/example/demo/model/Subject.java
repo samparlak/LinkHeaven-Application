@@ -33,7 +33,7 @@ public class Subject {
 
 	@Column(name = "date")
 	private String date;
-	
+
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "subject_table_id")
 	private SubjectTable subjectTable;
@@ -52,7 +52,7 @@ public class Subject {
 		LocalDateTime now = LocalDateTime.now();
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-		 LocalDateTime fromDateTime = LocalDateTime.parse(this.getDate(), formatter);
+		LocalDateTime fromDateTime = LocalDateTime.parse(this.getDate(), formatter);
 
 		long years = fromDateTime.until(now, ChronoUnit.YEARS);
 		fromDateTime = fromDateTime.plusYears(years);
@@ -79,23 +79,19 @@ public class Subject {
 
 	// index 0:yıl(year) , 1:ay(month) , 2:gün(day) , 3:saat(hour) ,
 	// 4:dakika(minute) , 5:saniye(second)
-	public String formatDateTimeDifference(String[] dateTimeElementsName, long[] dateTimeElementsValue) {
+	public static String formatDateTimeDifference(String[] dateTimeElementsName, long[] dateTimeElementsValue) {
 		String format = null;
 		if (dateTimeElementsValue[0] == 0) {
 			if (dateTimeElementsValue[1] > 0) {
-				format = Long.toString(dateTimeElementsValue[1]) + " " + dateTimeElementsName[1] + " önce";
-			}
-			if (dateTimeElementsValue[1] == 0) {
-				format = Long.toString(dateTimeElementsValue[2]) + " " + dateTimeElementsName[2] + " önce";
-			}
-			if (dateTimeElementsValue[2] == 0) {
-				format = Long.toString(dateTimeElementsValue[3]) + " " + dateTimeElementsName[3] + " önce";
-			}
-			if (dateTimeElementsValue[3] == 0) {
-				format = Long.toString(dateTimeElementsValue[4]) + " " + dateTimeElementsName[4] + " önce";
-			}
-			if (dateTimeElementsValue[4] == 0) {
-				format = Long.toString(dateTimeElementsValue[5]) + " " + dateTimeElementsName[5] + " önce";
+				format = Long.toString(dateTimeElementsValue[1]) + " " + dateTimeElementsName[1] + " önce"; // ay
+			} else if (dateTimeElementsValue[1] == 0 && dateTimeElementsValue[2] > 0) {
+				format = Long.toString(dateTimeElementsValue[2]) + " " + dateTimeElementsName[2] + " önce"; // gün
+			} else if (dateTimeElementsValue[2] == 0 && dateTimeElementsValue[3] > 0) {
+				format = Long.toString(dateTimeElementsValue[3]) + " " + dateTimeElementsName[3] + " önce"; // saat
+			} else if (dateTimeElementsValue[3] == 0 && dateTimeElementsValue[4] > 0) {
+				format = Long.toString(dateTimeElementsValue[4]) + " " + dateTimeElementsName[4] + " önce"; // dakika
+			} else if (dateTimeElementsValue[4] == 0 && dateTimeElementsValue[5] > 0) {
+				format = Long.toString(dateTimeElementsValue[5]) + " " + dateTimeElementsName[5] + " önce"; // saniye
 			}
 		} else {
 			if (dateTimeElementsValue[1] == 0) {

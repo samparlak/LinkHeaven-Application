@@ -18,15 +18,6 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	crossorigin="anonymous"></script>
-<script type="text/javascript">
-	function sortByKey(array, key) {
-		return array.sort(function(a, b) {
-			var x = a[key];
-			var y = b[key];
-			return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-		});
-	}
-</script>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>MyList</title>
@@ -106,7 +97,7 @@
 					<div class="card-header bg-info">
 						<div>
 							<h5 class="text-center text-white  font-weight-bold">Tüm
-								Linkler</h5>
+								Linkler  </h5>
 						</div>
 						<hr>
 						<form>

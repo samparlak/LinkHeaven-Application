@@ -41,7 +41,7 @@ public class SubjectDaoImp implements GenericDao<Subject> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Subject> sortDate() {
-		return entityManager.createQuery("from Subject order by date").getResultList();
+		return entityManager.createQuery("from Subject order by date desc").getResultList();
 	}
 
 	@Override
