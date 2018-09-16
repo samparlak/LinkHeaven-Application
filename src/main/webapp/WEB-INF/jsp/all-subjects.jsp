@@ -170,7 +170,7 @@
 							</div>
 							<br>
 							<div class="d-flex justify-content-around">
-								<div class="col-2 ml-4">
+								<div class="col-2 ml-5">
 									<h6 class="card-subtitle mb-2 text-muted">
 										<a href="#"
 											onclick="window.open('${pageContext.request.contextPath}/mvc/table/${subject.subjectTable.id}','_blank')">${subject.subjectTable.header}</a>
