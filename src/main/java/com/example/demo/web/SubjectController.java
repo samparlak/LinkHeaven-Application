@@ -3,6 +3,7 @@ package com.example.demo.web;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.model.Subject;
 import com.example.demo.model.SubjectTable;
 import com.example.demo.service.GenericService;
+import com.example.demo.util.Search;
 
 @Controller
 @RequestMapping("/mvc")
@@ -31,26 +33,55 @@ public class SubjectController {
 	private GenericService<SubjectTable> subjectTableService;
 
 	@RequestMapping("/home")
-	public ModelAndView index() {
+	public String index() {
+		return "index";
+	}
+
+	@RequestMapping("/allSubjects")
+	public ModelAndView getAllSubjects() {
 		List<Subject> subjects = subjectService.sortHeader();
-		ModelAndView mav = new ModelAndView();
 		for (Subject subject : subjects) {
 			subject.setDate(subject.getDateTimeDifference());
 		}
+		ModelAndView mav = new ModelAndView();
 		mav.addObject("subjects", subjects);
-		mav.setViewName("index");
+		mav.addObject("search", new Search());
+		mav.setViewName("all-subjects");
 		return mav;
 	}
 
-	@RequestMapping("/home-sortByDate-subjects")
+	@RequestMapping("/allSubjects-sortByDate")
 	public ModelAndView indexSortByDate_Subjects() {
 		List<Subject> subjects = subjectService.sortDate();
-		ModelAndView mav = new ModelAndView();
 		for (Subject subject : subjects) {
 			subject.setDate(subject.getDateTimeDifference());
 		}
+		ModelAndView mav = new ModelAndView();
 		mav.addObject("subjects", subjects);
-		mav.setViewName("index");
+		mav.addObject("search", new Search());
+		mav.setViewName("all-subjects");
+		return mav;
+	}
+
+	@PostMapping("/search-subjects")
+	public ModelAndView search(@ModelAttribute("search") Search search) {
+		Set<Subject> subjects = subjectService.search(search.getWord());
+		for (Subject subject : subjects) {
+			subject.setDate(subject.getDateTimeDifference());
+		}
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("subjects", subjects);
+		mav.addObject("search", new Search());
+		mav.setViewName("all-subjects");
+		return mav;
+	}
+
+	@GetMapping("subject")
+	public ModelAndView viewOneSubject(@RequestParam("id") int theSubjectId) {
+		Subject theSubject = subjectService.getOne(theSubjectId).changeDateFormat();
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("subject", theSubject);
+		mav.setViewName("subject");
 		return mav;
 	}
 
@@ -75,56 +106,11 @@ public class SubjectController {
 
 	@GetMapping("/subject-form-delete")
 	public ModelAndView showDeleteForm(@RequestParam("subjectId") int subjectId) {
-		Subject theSubject = subjectService.getOne(subjectId);
+		Subject theSubject = subjectService.getOne(subjectId).changeDateFormat();
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("subject", theSubject);
 		mav.addObject("subjectId", subjectId);
 		mav.setViewName("subject_form_delete");
-		return mav;
-	}
-
-	@GetMapping("/allSubjects")
-	public ModelAndView viewAllSubject() {
-		List<Subject> subjects = subjectService.getAll();
-		ModelAndView mav = new ModelAndView();
-		for (Subject subject : subjects) {
-			subject.changeDateFormat();
-		}
-		mav.addObject("subjects", subjects);
-		mav.setViewName("subjects");
-		return mav;
-	}
-
-	@GetMapping("/allSubjects/sortHeader")
-	public ModelAndView viewAllSubjectOrderByHeader() {
-		List<Subject> subjects = subjectService.sortHeader();
-		for (Subject subject : subjects) {
-			subject.changeDateFormat();
-		}
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("subjects", subjects);
-		mav.setViewName("subjects");
-		return mav;
-	}
-
-	@GetMapping("/allSubjects/sortDate")
-	public ModelAndView viewAllSubjectOrderByDate() {
-		List<Subject> subjects = subjectService.sortDate();
-		for (Subject subject : subjects) {
-			subject.changeDateFormat();
-		}
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("subjects", subjects);
-		mav.setViewName("subjects");
-		return mav;
-	}
-
-	@GetMapping("subject/{theSubjectId}")
-	public ModelAndView viewOneSubject(@PathVariable int theSubjectId) {
-		ModelAndView mav = new ModelAndView();
-		Subject theSubject = subjectService.getOne(theSubjectId).changeDateFormat();
-		mav.addObject("subject", theSubject);
-		mav.setViewName("subject");
 		return mav;
 	}
 
@@ -137,21 +123,20 @@ public class SubjectController {
 		SubjectTable theSubjectTable = subjectTableService.getOne(tableId);
 		theSubjectTable.addSubject(theSubject);
 		subjectService.createOne(theSubject);
-		return "redirect:/api/allSubjects";
+		return "redirect:/mvc/allSubjects";
 	}
 
 	@PutMapping("/subject")
 	public String update(@ModelAttribute Subject theSubject, @RequestParam("tableId") int tableId) {
-		System.out.println(theSubject.getSubjectTable());
 		theSubject.setSubjectTable(subjectTableService.getOne(tableId));
 		subjectService.updateOne(theSubject);
-		return "redirect:/api/allSubjects";
+		return "redirect:/mvc/allSubjects";
 	}
 
 	@DeleteMapping("subject/{theSubjectId}")
 	public String delete(@PathVariable int theSubjectId) {
 		subjectService.deleteOne(theSubjectId);
-		return "redirect:/api/allSubjects";
+		return "redirect:/mvc/allSubjects";
 	}
 
 }

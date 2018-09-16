@@ -85,26 +85,18 @@
 		<div class="col-md-12 row mb-5">
 			<div class="col-md-10 ml-auto mr-auto">
 
-				<!-- Link Repository List Header -->
+				<!-- Link List Header -->
 				<div class="card">
 					<div class="card-header bg-info">
-						<c:url var="createLinkLink"
-							value="${pageContext.request.contextPath}/mvc/subject-form-create">
-							<c:param name="tableId" value="${table.id}"></c:param>
-						</c:url>
 						<div>
-							<h5 class="text-center text-white  font-weight-bold">${table.header}</h5>
+							<h5 class="text-center text-white  font-weight-bold">Tüm
+								Linkler</h5>
 						</div>
 						<hr>
-						<div class="d-flex justify-content-around ">
-							<div>
-								<button class="btn btn-success font-weight-bold"
-									onclick="window.location.href='${createLinkLink}'">Link
-									Oluştur</button>
-							</div>
-							<div class="col-8 ml-3">
+						<div class="row ">
+							<div class="col-9 ml-3">
 								<form:form
-									action="${pageContext.request.contextPath}/mvc/table/${table.id}/search-Subjects"
+									action="${pageContext.request.contextPath}/mvc/search-subjects"
 									modelAttribute="search" method="POST">
 									<div class="input-group ">
 										<form:input path="word" type="text" class="form-control"
@@ -118,7 +110,7 @@
 									</div>
 								</form:form>
 							</div>
-							<div class="ml-3">
+							<div class="col-2 ml-3">
 								<div class="dropdown text-info font-weight-bold">
 									<a
 										class="btn btn-light dropdown-toggle text-info font-weight-bold"
@@ -128,9 +120,9 @@
 
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 										<a class="dropdown-item"
-											href="${pageContext.request.contextPath}/mvc/table/${table.id}/sortHeader">Alfabetik</a>
+											href="${pageContext.request.contextPath}/mvc/allSubjects">Alfabetik</a>
 										<a class="dropdown-item"
-											href="${pageContext.request.contextPath}/mvc/table/${table.id}/sortDate">Kronolojik</a>
+											href="${pageContext.request.contextPath}/mvc/allSubjects-sortByDate">Kronolojik</a>
 										<a
 									</div>
 								</div>
@@ -139,7 +131,7 @@
 					</div>
 				</div>
 
-				<!--Link Repository List -->
+				<!--Link List -->
 				<c:forEach items="${subjects}" var="subject">
 					<c:url var="viewSubjectLink"
 						value="${pageContext.request.contextPath}/mvc/subject">
@@ -178,7 +170,13 @@
 							</div>
 							<br>
 							<div class="d-flex justify-content-around">
-								<div class="col-9 text-left ml-3">
+								<div class="col-2 ml-4">
+									<h6 class="card-subtitle mb-2 text-muted">
+										<a href="#"
+											onclick="window.open('${pageContext.request.contextPath}/mvc/table/${subject.subjectTable.id}','_blank')">${subject.subjectTable.header}</a>
+									</h6>
+								</div>
+								<div class="col-7 ml-4">
 									<a style="font-size: 15px; text-decoration: underline"
 										href="${subject.link}" target="_blank" class="card-link">${subject.link}/</a>
 								</div>

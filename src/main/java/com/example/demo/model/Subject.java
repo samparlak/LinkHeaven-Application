@@ -38,6 +38,7 @@ public class Subject {
 	@JoinColumn(name = "subject_table_id")
 	private SubjectTable subjectTable;
 
+	// yyyy-MM-dd HH:mm:ss.S to dd/MM/yyyy HH:mm
 	public Subject changeDateFormat() {
 		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
 		LocalDateTime dateTime = LocalDateTime.parse(this.getDate(), formatter1);
@@ -48,6 +49,7 @@ public class Subject {
 		return this;
 	}
 
+	// calculate how many days ago was created
 	public String getDateTimeDifference() {
 		LocalDateTime now = LocalDateTime.now();
 
@@ -92,6 +94,8 @@ public class Subject {
 				format = Long.toString(dateTimeElementsValue[4]) + " " + dateTimeElementsName[4] + " önce"; // dakika
 			} else if (dateTimeElementsValue[4] == 0 && dateTimeElementsValue[5] > 0) {
 				format = Long.toString(dateTimeElementsValue[5]) + " " + dateTimeElementsName[5] + " önce"; // saniye
+			} else if (dateTimeElementsValue[5] == 0) {
+				format = "Yeni oluşturuldu.";
 			}
 		} else {
 			if (dateTimeElementsValue[1] == 0) {

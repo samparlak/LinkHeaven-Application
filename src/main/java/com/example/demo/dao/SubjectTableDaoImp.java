@@ -1,6 +1,8 @@
 package com.example.demo.dao;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 
@@ -26,10 +28,14 @@ public class SubjectTableDaoImp implements GenericDao<SubjectTable> {
 		return entityManager.find(SubjectTable.class, theId);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<SubjectTable> searchByHeader(String theHeader) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<SubjectTable> search(String word) {
+		Set<SubjectTable> mergedSubjects=new HashSet<>();
+		List<SubjectTable> subjects = entityManager.createQuery("from SubjectTable  where header like :keyword ")
+				.setParameter("keyword", "%" + word + "%").getResultList();
+		mergedSubjects.addAll(subjects);
+		return mergedSubjects;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -41,9 +47,9 @@ public class SubjectTableDaoImp implements GenericDao<SubjectTable> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<SubjectTable> sortDate() {
-		return entityManager.createQuery("from SubjectTable order by date").getResultList();
+		return entityManager.createQuery("from SubjectTable order by date desc").getResultList();
 	}
-	
+
 	@Override
 	public void createOne(SubjectTable theObject) {
 		entityManager.persist(theObject);

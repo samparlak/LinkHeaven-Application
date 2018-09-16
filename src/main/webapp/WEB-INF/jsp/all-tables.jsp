@@ -88,27 +88,24 @@
 				<!-- Link Repository List Header -->
 				<div class="card">
 					<div class="card-header bg-info">
-						<c:url var="createLinkLink"
-							value="${pageContext.request.contextPath}/mvc/subject-form-create">
-							<c:param name="tableId" value="${table.id}"></c:param>
-						</c:url>
 						<div>
-							<h5 class="text-center text-white  font-weight-bold">${table.header}</h5>
+							<h5 class="text-center text-white  font-weight-bold">Tüm
+								Link Depoları</h5>
 						</div>
 						<hr>
-						<div class="d-flex justify-content-around ">
+						<div class="d-flex justify-content-around">
 							<div>
-								<button class="btn btn-success font-weight-bold"
-									onclick="window.location.href='${createLinkLink}'">Link
-									Oluştur</button>
+								<button
+									onclick="window.location.href='${pageContext.request.contextPath}/mvc/table-form-create'"
+									class="btn btn-success font-weight-bold">Depo Oluştur</button>
 							</div>
 							<div class="col-8 ml-3">
 								<form:form
-									action="${pageContext.request.contextPath}/mvc/table/${table.id}/search-Subjects"
+									action="${pageContext.request.contextPath}/mvc/search-subjectTables"
 									modelAttribute="search" method="POST">
-									<div class="input-group ">
+									<div class="input-group">
 										<form:input path="word" type="text" class="form-control"
-											placeholder="Link ara..." />
+											placeholder="Link deposu ara..." />
 										<div class="input-group-append">
 											<button class="btn btn-light  text-info font-weight-bold"
 												type="submit">
@@ -128,9 +125,9 @@
 
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 										<a class="dropdown-item"
-											href="${pageContext.request.contextPath}/mvc/table/${table.id}/sortHeader">Alfabetik</a>
+											href="${pageContext.request.contextPath}/mvc/allTables">Alfabetik</a>
 										<a class="dropdown-item"
-											href="${pageContext.request.contextPath}/mvc/table/${table.id}/sortDate">Kronolojik</a>
+											href="${pageContext.request.contextPath}/mvc/allTables-sortByDate">Kronolojik</a>
 										<a
 									</div>
 								</div>
@@ -140,53 +137,37 @@
 				</div>
 
 				<!--Link Repository List -->
-				<c:forEach items="${subjects}" var="subject">
-					<c:url var="viewSubjectLink"
-						value="${pageContext.request.contextPath}/mvc/subject">
-						<c:param name="id" value="${subject.id}"></c:param>
+				<c:forEach items="${tables}" var="table">
+					<c:url var="updateTableLink"
+						value="${pageContext.request.contextPath}/mvc/table-form-update">
+						<c:param name="id" value="${table.id}"></c:param>
 					</c:url>
-					<c:url var="updateSubjectLink"
-						value="${pageContext.request.contextPath}/mvc/subject-form-update">
-						<c:param name="tableId" value="${subject.subjectTable.id}"></c:param>
-						<c:param name="subjectId" value="${subject.id}"></c:param>
-					</c:url>
-					<c:url var="deleteSubjectLink"
-						value="${pageContext.request.contextPath}/mvc/subject-form-delete">
-						<c:param name="subjectId" value="${subject.id}"></c:param>
+					<c:url var="deleteTableLink"
+						value="${pageContext.request.contextPath}/mvc/table-form-delete">
+						<c:param name="id" value="${table.id}"></c:param>
 					</c:url>
 					<div style="cursor: pointer"
-						onclick="window.open('${subject.link}','_blank')"
+						onclick="window.open('${pageContext.request.contextPath}/mvc/table/${table.id}','_blank')"
 						class="card border-info ">
 						<div class="card-body">
 							<div class="d-flex justify-content-around">
-								<div class="col-2">
-									<h5 class="card-title">${subject.header}</h5>
-								</div>
-								<div class="col-7">
-									<p class="card-text">${subject.note}</p>
+								<div class="col-9">
+									<h5 class="card-title">${table.header}</h5>
 								</div>
 								<div class="col-2 mr-4">
-									<div align="right" class="btn-group">
+									<div class="btn-group">
 										<button class="btn  btn-success"
-											onclick="window.open('${viewSubjectLink}','_blank')">İncele</button>
+											onclick="window.open('${pageContext.request.contextPath}/mvc/table/${table.id}','_blank')">İncele</button>
 										<button class="btn  btn-primary"
-											onclick="window.open('${updateSubjectLink}','_blank')">Düzenle</button>
+											onclick="window.open('${updateTableLink}','_blank')">Düzenle</button>
 										<button class="btn  btn-danger"
-											onclick="window.open('${deleteSubjectLink}','_blank')">Sil</button>
+											onclick="window.open('${deleteTableLink}','_blank')">Sil</button>
 									</div>
 								</div>
 							</div>
 							<br>
-							<div class="d-flex justify-content-around">
-								<div class="col-9 text-left ml-3">
-									<a style="font-size: 15px; text-decoration: underline"
-										href="${subject.link}" target="_blank" class="card-link">${subject.link}/</a>
-								</div>
-								<div class="col-3">
-									<p class="lead text-right" style="font-size: 15px;">
-										${subject.date}</p>
-								</div>
-							</div>
+							<p class="lead text-right" style="font-size: 15px;">
+								${table.date}</p>
 						</div>
 					</div>
 				</c:forEach>

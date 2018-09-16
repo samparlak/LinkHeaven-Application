@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -30,8 +31,8 @@ public class SubjectServiceImp implements GenericService<Subject> {
 
 	@Transactional
 	@Override
-	public List<Subject> searchByHeader(String theHeader) {
-		return subjectDao.searchByHeader(theHeader);
+	public Set<Subject> search(String word) {
+		return subjectDao.search(word);
 	}
 
 	@Transactional
